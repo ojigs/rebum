@@ -46,4 +46,49 @@ module.exports = {
             console.log(error)
         }
     },
+
+    getPost: async (req, res) => {
+        try {
+            const post = await Post.findById(req.params.id)
+	        res.render('post', {
+	            post: post,
+	            user: req.user,
+	            title: req.user.userName + ' post'
+	        })
+        } catch (error) {
+            console.log(error)
+        }
+
+    },
+
+    likePost: async (req, res) => {
+        try {
+            console.log(req.params.id)
+            await Post.findOneAndUpdate(
+                {_id: req.params.id}, 
+                {
+                    $inc: {likes: 1}
+                }
+            )
+            console.log('Likes +1')
+            res.redirect(`/post/${req.params.id}`)
+        } catch (error) {
+            console.log(error)
+        }
+    },
+
+    deletePost: async (req, res) => {
+        try {
+            //Find the post by id
+            let post = await Post.findById({ _id: req.params.id })
+            //delete image from cloudinary
+            await cloudinary.uploader.destroy(post.cloudinaryId)
+            //delete post from DB
+            await Post.remove({ _id: req.params.id })
+            console.log('Deleted post')
+            res.redirect('/profile')
+        } catch (error) {
+            console.log(error)
+        }
+    }
 }
