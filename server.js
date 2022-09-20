@@ -20,13 +20,18 @@ require("./config/passport")(passport)
 // connect to database
 connectDB()
 
-//Static folder
+//Use EJS for views
 app.set('view engine', 'ejs')
 
 //Body parsing
 app.use(express.urlencoded({ extended: true}))
 app.use(express.json())
+
+//logger
 app.use(logger('dev'))
+
+//Static folder
+app.use(express.static('public'))
 
 //Use forms for put / delete
 app.use(methodOverride('_method'))
