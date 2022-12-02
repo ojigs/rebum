@@ -10,6 +10,7 @@ const flash = require('express-flash')
 const connectDB = require('./config/database')
 const mainRoutes = require('./routes/main')
 const postRoutes = require('./routes/posts')
+const commentRoutes = require('./routes/comments')
 
 //Use .env file in config folder
 require('dotenv').config({ path: './config/.env' })
@@ -56,6 +57,7 @@ app.use(flash())
 // Setup routes the server listens to
 app.use('/', mainRoutes)
 app.use('/post', postRoutes)
+app.use('/comment', commentRoutes)
 
 //Server running
 app.listen(process.env.PORT, () => {
